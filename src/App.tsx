@@ -24,22 +24,22 @@ const createEmptyCondition = (): FilterCondition => ({
 
 function App() {
   const [employees, setEmployees] = useState<Employee[]>([])
-  const [filters, setFilters] = useState<FilterCondition[]>([createEmptyCondition()])
+  const [filters, setFilters] = useState<FilterCondition[]>(() => {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (!stored) {
+      return [createEmptyCondition()]
+    }
+
+    try {
+      const parsed = JSON.parse(stored) as FilterCondition[]
+      return parsed.length ? parsed : [createEmptyCondition()]
+    } catch {
+      return [createEmptyCondition()]
+    }
+  })
   const [sorting, setSorting] = useState<SortingState>([])
   const [loading, setLoading] = useState(true)
   const [warning, setWarning] = useState<string | null>(null)
-
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored) as FilterCondition[]
-        setFilters(parsed.length ? parsed : [createEmptyCondition()])
-      } catch {
-        setFilters([createEmptyCondition()])
-      }
-    }
-  }, [])
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filters))
