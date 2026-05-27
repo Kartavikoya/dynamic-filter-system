@@ -1,5 +1,9 @@
+import fs from 'fs'
+import path from 'path'
 import mock from 'mock-json-api'
-import employees from './mock-data/employees.json' assert { type: 'json' }
+
+const employeesPath = path.resolve('./mock-data/employees.json')
+const employees = JSON.parse(fs.readFileSync(employeesPath, 'utf8'))
 
 const api = mock({
   mockRoutes: [
