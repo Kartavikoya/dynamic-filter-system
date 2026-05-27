@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+﻿# Dynamic Filter System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript + Vite application implementing a reusable dynamic filter builder for an employee dataset.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Dynamic filter rows driven by external field definitions
+- Support for text, number, date, amount, single-select, multi-select, and boolean filters
+- Local JSON dataset filtering and fallback data handling
+- Optional mock JSON API for `/api/employees`
+- Sortable result table with CSV and JSON export
+- Filter state persistence via `localStorage`
 
-## React Compiler
+## Running the project
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Install dependencies:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start the Vite development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Optional: run the mock API server:
+
+```bash
+npm run mock
+```
+
+Then open the local URL shown in your terminal.
+
+## Available scripts
+
+- `npm run dev` — start development server
+- `npm run build` — build production bundles
+- `npm run preview` — preview the production build locally
+- `npm run mock` — start the mock JSON API server
+
+## Project structure
+
+- `src/App.tsx` — main app container, data loading, state management, export actions
+- `src/components/FilterBuilder.tsx` — dynamic filter form UI
+- `src/components/DataTable.tsx` — sortable table for filtered results
+- `src/config/filterConfig.ts` — filter field metadata and operator definitions
+- `src/utils/filterUtils.ts` — filter validation and matching logic
+- `src/data/employees.ts` — built-in dataset fallback
+- `mock-server.js` — mock JSON API server
+- `mock-data/employees.json` — employee seed data
+
+## Notes
+
+- The app prefers the mock API at `http://localhost:4001/api/employees`, but falls back to built-in data if the server is unavailable.
+- Export buttons generate filtered CSV and JSON payloads from the current query results.
+- Filters are kept in `localStorage` so they survive browser refreshes.
+
+## Dependencies
+
+- `react` / `react-dom`
+- `@mui/material`
+- `@tanstack/react-table`
+- `dayjs`
+- `react-csv`
+- `mock-json-api`
+
+## Recommended workflow
+
+1. Start `npm run mock` in one terminal
+2. Start `npm run dev` in another terminal
+3. Open the app and add filters
+4. Export or reset the filtered dataset
+
+## License
+
+This project is an example implementation and is intended for demonstration purposes.
